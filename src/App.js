@@ -1,8 +1,15 @@
+import { BrowserRouter, Switch, Route } from "react-router-dom";
+import HomePage from "./components/HomePage/HomePage";
+import Register from "./components/Users/Register/Register";
+
 function App() {
 	return (
-		<div>
-			<h1 className="text-yellow-400">Blog App</h1>
-		</div>
+		<BrowserRouter>
+			<Switch>
+				<Route exact path="/" component={HomePage} />
+				<Route exact path="/register" component={Register} />
+			</Switch>
+		</BrowserRouter>
 	);
 }
 
