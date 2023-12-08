@@ -35,7 +35,10 @@ const Register = () => {
 		validationSchema: formSchema,
 	}); //takes in 3 params 1>initial values .. 2> onsubmit  3>validationScehma ...
 
-	console.log(formik);
+	// console.log(formik);
+	const storeData = useSelector((state) => state);
+	const { loading, appErr, serverErr, registered } = storeData?.users; //get the piece if state from users store
+	console.log("App ERR And Server ERR  ", appErr, serverErr);
 	return (
 		<section className="relative py-20 2xl:py-40 bg-gray-800 overflow-hidden">
 			<div className="relative container px-4 mx-auto">
@@ -55,8 +58,15 @@ const Register = () => {
 							<div className="px-6 lg:px-20 py-12 lg:py-24 bg-gray-600 rounded-lg">
 								<form onSubmit={formik.handleSubmit}>
 									<h3 className="mb-10 text-2xl text-white font-bold font-heading">
-										Register Account–
+										Register Yourself 👋
+										{/* Error Messages / alerts  */}
+										{appErr || serverErr ? (
+											<div className="text-red-600">
+												{serverErr} : {appErr} !😪
+											</div>
+										) : null}
 									</h3>
+
 									{/* First name */}
 									<div className="flex items-center pl-6 mb-3 bg-white rounded-full">
 										<span className="inline-block pr-3 py-2 border-r border-gray-50">
@@ -252,12 +262,22 @@ const Register = () => {
 
 									<div className="inline-flex mb-10"></div>
 
-									<button
-										type="submit"
-										className="py-4 w-full bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-full transition duration-200"
-									>
-										Register
-									</button>
+									{/* loading  */}
+									{loading ? (
+										<button
+											disabled
+											className="py-4 w-full bg-gray-500  text-white font-bold rounded-full transition duration-200"
+										>
+											Loading...pls Wait..
+										</button>
+									) : (
+										<button
+											type="submit"
+											className="py-4 w-full bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-full transition duration-200"
+										>
+											Register
+										</button>
+									)}
 								</form>
 							</div>
 						</div>
