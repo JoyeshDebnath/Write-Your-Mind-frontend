@@ -28,3 +28,36 @@ export const registerUserAction = createAsyncThunk(
 		}
 	}
 );
+
+// Slices
+const userSlices = createSlice({
+	name: "users",
+	initialState: {
+		userAuth: "login",
+	},
+	extraReducers: (builder) => {
+		//REGISTER
+		//when request pending :  handle pending state
+		builder.addCase(registerUserAction.pending, (state, action) => {
+			state.loading = true;
+			state.appErr = undefined;
+			state.serverErr = undefined;
+		});
+		//when request returnns data : handle fulfilled
+		builder.addCase(registerUserAction.fulfilled, (state, action) => {
+			state.loading = false;
+			state.registered = action.payload;
+			state.appErr = undefined;
+			state.serverErr = undefined;
+		});
+		//something goes wrong : handle rejected
+		builder.addCase(registerUserAction.rejected, (state, action) => {
+			state.loading = false;
+			// state.registered = undefined;
+			state.appErr = action?.payload?.message;
+			state.serverErr = action?.error?.message;
+		});
+	},
+});
+
+export default userSlices.reducer;
