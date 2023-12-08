@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUserAction } from "../../../redux/slices/users/usersSlices";
 import { useEffect } from "react";
+import { Redirect } from "react-router-dom";
 //Form Schemqa for error validastion using Yup
 
 const formSchema = Yup.object({
@@ -39,6 +40,9 @@ const Register = () => {
 	const storeData = useSelector((state) => state);
 	const { loading, appErr, serverErr, registered } = storeData?.users; //get the piece if state from users store
 	console.log("App ERR And Server ERR  ", appErr, serverErr);
+	if (registered) {
+		return <Redirect to="/profile" />;
+	}
 	return (
 		<section className="relative py-20 2xl:py-40 bg-gray-800 overflow-hidden">
 			<div className="relative container px-4 mx-auto">
