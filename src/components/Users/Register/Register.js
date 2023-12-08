@@ -1,8 +1,11 @@
 import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-
+import { useDispatch, useSelector } from "react-redux";
+import { registerUserAction } from "../../../redux/slices/users/usersSlices";
+import { useEffect } from "react";
 //Form Schemqa for error validastion using Yup
+
 const formSchema = Yup.object({
 	firstName: Yup.string().required("First name is Required!"),
 	lastName: Yup.string().required("last name is required!"),
@@ -14,6 +17,8 @@ const formSchema = Yup.object({
 //Register
 //-------------------------------
 const Register = () => {
+	const dispatch = useDispatch();
+
 	//formik config
 	const formik = useFormik({
 		initialValues: {
@@ -24,6 +29,8 @@ const Register = () => {
 		},
 		onSubmit: (values) => {
 			console.log("Values :", values);
+			//dispatch the action
+			dispatch(registerUserAction(values)); //passing payload in the action of register
 		},
 		validationSchema: formSchema,
 	}); //takes in 3 params 1>initial values .. 2> onsubmit  3>validationScehma ...
