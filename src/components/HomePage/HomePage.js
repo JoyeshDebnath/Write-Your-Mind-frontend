@@ -11,8 +11,8 @@ const HomePage = () => {
 								Share your thoughts with the World ! 🚀
 							</span>
 							<h2 className="max-w-2xl mt-12 mb-12 text-6xl 2xl:text-8xl text-white font-bold font-heading">
-								Whats in your mind ? 📑{" "}
-								<span className="text-yellow-500">share your mind .</span>
+								Whats in your mind{" "}
+								<span className="text-yellow-500">Today ? ✍</span>
 							</h2>
 							<p className="mb-12 lg:mb-16 2xl:mb-24 text-xl text-gray-100">
 								Your blogs must be free from <b>Racism</b> and <b>Slangs</b>{" "}
@@ -21,7 +21,7 @@ const HomePage = () => {
 								className="inline-block px-12 py-5 text-lg text-white font-bold bg-blue-500 hover:bg-blue-600 rounded-full transition duration-200"
 								href="/"
 							>
-								Lets Go
+								Lets Explore🤿
 							</a>
 						</div>
 						<div className="w-full lg:w-1/2 px-4">
