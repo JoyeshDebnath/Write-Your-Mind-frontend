@@ -27,9 +27,9 @@ const Login = () => {
 
 	const storeData = useSelector((state) => state);
 	const { loading, serverErr, appErr, userAuth } = storeData?.users;
-	// if (userAuth) {
-	// 	return <Redirect to="/profile" />;
-	// }
+	if (userAuth) {
+		return <Redirect to="/profile" />;
+	}
 	return (
 		<>
 			<section className="min-h-screen relative py-20 2xl:py-40 bg-gray-900 overflow-hidden">
@@ -126,12 +126,21 @@ const Login = () => {
 											{formik.touched.password && formik.errors.password}
 										</div>
 										{/* Login btn */}
-										<button
-											type="submit"
-											className="py-4 w-full bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-full transition duration-200"
-										>
-											Login
-										</button>
+										{loading ? (
+											<button
+												disabled
+												className="py-4 w-full bg-gray-500  text-white font-bold rounded-full transition duration-200"
+											>
+												Loading...pls Wait..
+											</button>
+										) : (
+											<button
+												type="submit"
+												className="py-4 w-full bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-full transition duration-200"
+											>
+												Login
+											</button>
+										)}
 									</form>
 								</div>
 							</div>
