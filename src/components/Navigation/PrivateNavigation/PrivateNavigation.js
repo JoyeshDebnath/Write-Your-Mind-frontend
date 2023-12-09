@@ -2,6 +2,8 @@
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
 import {
 	BellIcon,
 	MenuIcon,
@@ -9,6 +11,7 @@ import {
 	BookOpenIcon,
 } from "@heroicons/react/outline";
 import { PlusIcon, LogoutIcon } from "@heroicons/react/solid";
+import { logoutUserAction } from "./../../../redux/slices/users/usersSlices";
 
 const navigation = [
 	{ name: "Home", href: "/", current: true },
@@ -22,6 +25,8 @@ function classNames(...classes) {
 }
 
 const PrivateNavigation = ({ isLogin }) => {
+	const dispatch = useDispatch();
+
 	const userNavigation = [
 		{ name: "Your Profile", href: `/profile` },
 		{ name: "Change your password", href: "/update-password" },
@@ -81,6 +86,7 @@ const PrivateNavigation = ({ isLogin }) => {
 									</Link>
 
 									<button
+										onClick={() => dispatch(logoutUserAction())}
 										type="button"
 										className="relative inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-500 hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-indigo-500"
 									>
