@@ -59,6 +59,23 @@ export const loginUserAction = createAsyncThunk(
 	}
 );
 
+//---------------------------------------------------------
+//Logout Action
+//-------------------------------------------------------
+export const logoutUserAction = createAsyncThunk(
+	"users/logout",
+	async (payload, { rejectWithValue, getState, dispatch }) => {
+		try {
+			//remove the logged in user from local storage
+			localStorage.removeItem("userInfo");
+		} catch (error) {
+			if (!error?.response) throw error;
+
+			return rejectWithValue(error?.response?.data);
+		}
+	}
+);
+
 //get the user from the local storage .. and put into store
 const userLoginFromStorage = localStorage.getItem("userInfo")
 	? JSON.parse(localStorage.getItem("userInfo"))
@@ -111,6 +128,27 @@ const userSlices = createSlice({
 		});
 		//lofin failed request
 		builder.addCase(loginUserAction.rejected, (state, action) => {
+			state.loading = false;
+			state.appErr = action?.payload?.message;
+			state.serverErr = action?.error?.message;
+		});
+
+		//----------------------------------------------------------------------------------
+		//Logout User reducer
+		//----------------------------------------------------------------------------------
+
+		builder.addCase(logoutUserAction.pending, (state, action) => {
+			state.loading = true;
+		});
+
+		builder.addCase(logoutUserAction.fulfilled, (state, action) => {
+			state.loading = false;
+			state.userAuth = undefined;
+			state.appErr = action?.payload?.message;
+			state.serverErr = action?.error?.message;
+		});
+
+		builder.addCase(logoutUserAction.rejected, (state, action) => {
 			state.loading = false;
 			state.appErr = action?.payload?.message;
 			state.serverErr = action?.error?.message;
