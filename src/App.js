@@ -4,6 +4,7 @@ import Register from "./components/Users/Register/Register";
 import Login from "./components/Users/Login/Login";
 import NavBar from "./components/Navigation/NavBar";
 import AddNewCategory from "./components/Categories/AddNewCategory";
+import CategoryList from "./components/Categories/CategoryList";
 
 function App() {
 	return (
@@ -11,6 +12,7 @@ function App() {
 			<NavBar></NavBar>
 			<Switch>
 				<Route exact path="/add-category" component={AddNewCategory} />
+				<Route exact path="/category-list" component={CategoryList} />
 				<Route exact path="/" component={HomePage} />
 				<Route exact path="/register" component={Register} />
 				<Route exact path="/login" component={Login} />

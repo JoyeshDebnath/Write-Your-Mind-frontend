@@ -3,12 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 
 import { PencilAltIcon } from "@heroicons/react/outline";
-import { fetchCategoriesAction } from "../../redux/slices/category/categorySlice";
+import { fetchAllCategoriesAction } from "../../redux/slices/category/categorySlice";
 
 const CategoryList = () => {
 	const dispatch = useDispatch();
 	useEffect(() => {
-		dispatch(fetchCategoriesAction());
+		dispatch(fetchAllCategoriesAction());
 	}, [dispatch]);
 	const category = useSelector((state) => state?.category);
 
