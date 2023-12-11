@@ -5,12 +5,26 @@ import baseUrl from "../../../utils/baseURL";
 export const createCategoryAction = createAsyncThunk(
 	"category/create-category",
 	async (category, { rejectWithValue, getState, dispatch }) => {
+		console.log("Inside the create category action ..", getState());
+		//get the token from users state ...
+		const user = getState()?.users;
+		const { userAuth } = user;
+		//get the auser auth token from the  users state .in store ...
+		//config for headers ...
+		const config = {
+			headers: {
+				Authorization: `Bearer ${userAuth?.token}`,
+			},
+		};
 		try {
-			//http call for category
-			// console.log(getState)
-			const { data } = await axios.post(`${baseUrl}/api/category`, {
-				title: category?.title,
-			});
+			const { data } = await axios.post(
+				`${baseUrl}/api/category`,
+				{
+					title: category?.title,
+				},
+				config
+			);
+			return data;
 		} catch (error) {
 			if (!error?.response) {
 				throw error;
@@ -47,4 +61,4 @@ const categorySlices = createSlice({
 	},
 });
 
-export default categorySlices.reducers;
+export default categorySlices.reducer;

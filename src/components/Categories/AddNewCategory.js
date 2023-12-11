@@ -1,6 +1,29 @@
 import { PlusCircleIcon, BookOpenIcon } from "@heroicons/react/solid";
+import { useDispatch, useSelector } from "react-redux";
+import { createCategoryAction } from "./../../redux/slices/category/categorySlice";
+import * as Yup from "yup";
+import { useFormik } from "formik";
 
+const categoryFormSchema = Yup.object({
+	title: Yup.string().required(
+		"Please enter the category title You want to Add ."
+	),
+});
 const AddNewCategory = () => {
+	const dispatch = useDispatch();
+
+	const formik = useFormik({
+		initialValues: {
+			title: "",
+		},
+		onSubmit: (values) => {
+			dispatch(createCategoryAction(values));
+		},
+		validationSchema: categoryFormSchema,
+	});
+	//get category state data
+	const storeData = useSelector((state) => state);
+	const { loading, category, appErr, serverErr } = storeData?.category;
 	return (
 		<div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
 			<div className="max-w-md w-full space-y-8">
@@ -13,10 +36,18 @@ const AddNewCategory = () => {
 						<p className="font-medium text-indigo-600 hover:text-indigo-500">
 							These are the categories user will select when creating a post
 						</p>
+						{/* Error Message  */}
+						<div>
+							{appErr || serverErr ? (
+								<h2 className="text-red-500 text-center text-lg">
+									{appErr} {serverErr}
+								</h2>
+							) : null}
+						</div>
 					</p>
 				</div>
 				{/* Form */}
-				<form className="mt-8 space-y-6">
+				<form onSubmit={formik.handleSubmit} className="mt-8 space-y-6">
 					<input type="hidden" name="remember" defaultValue="true" />
 					<div className="rounded-md shadow-sm -space-y-px">
 						<div>
@@ -25,13 +56,16 @@ const AddNewCategory = () => {
 							</label>
 							{/* Title */}
 							<input
+								value={formik.values.title}
+								onChange={formik.handleChange("title")}
+								onBlur={formik.handleBlur("title")}
 								type="text"
 								autoComplete="text"
 								className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-center focus:z-10 sm:text-sm"
 								placeholder="New Category"
 							/>
 							<div className="text-red-400 mb-2">
-								{/* {formik.touched.title && formik.errors.title} */} Err here
+								{formik.touched.title && formik.errors.title}
 							</div>
 						</div>
 					</div>
@@ -39,18 +73,27 @@ const AddNewCategory = () => {
 					<div>
 						<div>
 							{/* Submit */}
-							<button
-								type="submit"
-								className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-							>
-								<span className="absolute left-0 inset-y-0 flex items-center pl-3">
-									<PlusCircleIcon
-										className="h-5 w-5 text-yellow-500 group-hover:text-indigo-400"
-										aria-hidden="true"
-									/>
-								</span>
-								Add new Category
-							</button>
+							{loading ? (
+								<button
+									disabled
+									className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 "
+								>
+									LOADING ...
+								</button>
+							) : (
+								<button
+									type="submit"
+									className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+								>
+									<span className="absolute left-0 inset-y-0 flex items-center pl-3">
+										<PlusCircleIcon
+											className="h-5 w-5 text-yellow-500 group-hover:text-indigo-400"
+											aria-hidden="true"
+										/>
+									</span>
+									Add new Category
+								</button>
+							)}
 						</div>
 					</div>
 				</form>
