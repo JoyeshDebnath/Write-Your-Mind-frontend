@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import baseUrl from "../../../utils/baseURL";
 
-export const reateCategoryAction = createAsyncThunk(
+export const createCategoryAction = createAsyncThunk(
 	"category/create-category",
 	async (category, { rejectWithValue, getState, dispatch }) => {
 		try {
@@ -19,3 +19,32 @@ export const reateCategoryAction = createAsyncThunk(
 		}
 	}
 );
+
+//category slices
+
+const categorySlices = createSlice({
+	name: "categories",
+	initialState: { category: "all" },
+	extraReducers: (builder) => {
+		builder.addCase(createCategoryAction.pending, (state, action) => {
+			state.loading = true;
+			state.appErr = undefined;
+			state.serverErr = undefined;
+		});
+
+		builder.addCase(createCategoryAction.fulfilled, (state, action) => {
+			state.loading = false;
+			state.appErr = undefined;
+			state.serverErr = undefined;
+			state.category = action?.payload;
+		});
+
+		builder.addCase(createCategoryAction.rejected, (state, action) => {
+			state.loading = false;
+			state.appErr = action?.payload?.message;
+			state.serverErr = action?.error?.message;
+		});
+	},
+});
+
+export default categorySlices.reducers;
