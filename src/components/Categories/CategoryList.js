@@ -4,6 +4,7 @@ import { useEffect } from "react";
 
 import { PencilAltIcon } from "@heroicons/react/outline";
 import { fetchAllCategoriesAction } from "../../redux/slices/category/categorySlice";
+import DateFormatter from "../../utils/DateFormatter";
 
 const CategoryList = () => {
 	const dispatch = useDispatch();
@@ -87,7 +88,9 @@ const CategoryList = () => {
 													{category.title}
 												</td>
 												<td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-													{category?.createdAt}
+													<DateFormatter
+														date={category?.createdAt}
+													></DateFormatter>
 												</td>
 												<Link>
 													<td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
