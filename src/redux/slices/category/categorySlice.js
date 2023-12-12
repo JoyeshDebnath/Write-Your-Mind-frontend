@@ -63,7 +63,7 @@ export const fetchAllCategoriesAction = createAsyncThunk(
 //Update a category Action
 export const updateCategoryAction = createAsyncThunk(
 	"category/update-category",
-	async (categoryId, { rejectWithValue, getState, dispatch }) => {
+	async ({ categoryId, title }, { rejectWithValue, getState, dispatch }) => {
 		const user = getState().users;
 		const { userAuth } = user;
 		const config = {
@@ -75,6 +75,7 @@ export const updateCategoryAction = createAsyncThunk(
 		try {
 			const { data } = await axios.put(
 				`${baseUrl}/api/category/${categoryId}`,
+				{ title: title },
 				config
 			);
 

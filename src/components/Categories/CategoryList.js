@@ -93,7 +93,7 @@ const CategoryList = () => {
 														date={category?.createdAt}
 													></DateFormatter>
 												</td>
-												<Link>
+												<Link to={`/update-category/${category._id}`}>
 													<td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
 														<PencilAltIcon className="h-5 text-indigo-500" />
 													</td>
