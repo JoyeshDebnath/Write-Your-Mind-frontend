@@ -114,6 +114,35 @@ export const deleteCategoryAction = createAsyncThunk(
 		}
 	}
 );
+
+//Fetch a  Single category action .
+export const fetchSingleCategoryAction = createAsyncThunk(
+	"category/fetch-single-category",
+	async (categoryId, { rejectWithValue, getState, dispatch }) => {
+		const user = getState().users;
+		const { userAuth } = user;
+		const config = {
+			headers: {
+				Authorization: `Bearer ${userAuth?.token}`,
+			},
+		};
+
+		try {
+			const { data } = await axios.get(
+				`${baseUrl}/api/category/${categoryId}`,
+				config
+			);
+
+			return data;
+		} catch (error) {
+			if (!error?.response) {
+				throw error;
+			}
+			return rejectWithValue(error?.response?.data);
+		}
+	}
+);
+
 //category slices
 
 const categorySlices = createSlice({
@@ -180,7 +209,7 @@ const categorySlices = createSlice({
 			state.updatedCategory = action?.payload;
 		});
 
-		builder.addCase(fetchAllCategoriesAction.rejected, (state, action) => {
+		builder.addCase(updateCategoryAction.rejected, (state, action) => {
 			state.loading = false;
 			state.appErr = action?.payload?.message;
 			state.serverErr = action?.error?.message;
@@ -203,6 +232,28 @@ const categorySlices = createSlice({
 		});
 
 		builder.addCase(deleteCategoryAction.rejected, (state, action) => {
+			state.loading = false;
+			state.appErr = action?.payload?.message;
+			state.serverErr = action?.error?.message;
+		});
+
+		//-----------------------------------------------------------------
+		//Fetch a Single  Category Reducers
+		//---------------------------------------------------------------
+		builder.addCase(fetchSingleCategoryAction.pending, (state, action) => {
+			state.loading = true;
+			state.appErr = undefined;
+			state.serverErr = undefined;
+		});
+
+		builder.addCase(fetchSingleCategoryAction.fulfilled, (state, action) => {
+			state.loading = false;
+			state.appErr = undefined;
+			state.serverErr = undefined;
+			state.category = action?.payload;
+		});
+
+		builder.addCase(fetchSingleCategoryAction.rejected, (state, action) => {
 			state.loading = false;
 			state.appErr = action?.payload?.message;
 			state.serverErr = action?.error?.message;
