@@ -6,6 +6,7 @@ import { PencilAltIcon } from "@heroicons/react/outline";
 import { fetchAllCategoriesAction } from "../../redux/slices/category/categorySlice";
 import DateFormatter from "../../utils/DateFormatter";
 
+import Loading from "../../utils/Loading";
 const CategoryList = () => {
 	const dispatch = useDispatch();
 	useEffect(() => {
@@ -18,7 +19,7 @@ const CategoryList = () => {
 	return (
 		<>
 			{loading ? (
-				<h2 className="text-center text-3xl text-green-800">Loading</h2>
+				<Loading></Loading>
 			) : appErr || serverErr ? (
 				<h2 className="text-center text-3xl text-red-600">
 					{serverErr} {serverErr}
