@@ -21,7 +21,7 @@ const categoryFormSchema = Yup.object({
 	),
 });
 const UpdateCategory = (props) => {
-	const id = props?.match?.params?.id;
+	const id = props?.computedMatch?.params?.id;
 	const dispatch = useDispatch();
 	useEffect(() => {
 		dispatch(fetchSingleCategoryAction(id));

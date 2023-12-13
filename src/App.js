@@ -6,15 +6,33 @@ import NavBar from "./components/Navigation/NavBar";
 import AddNewCategory from "./components/Categories/AddNewCategory";
 import CategoryList from "./components/Categories/CategoryList";
 import UpdateCategory from "./components/Categories/UpdateCategory";
-
+import PrivateProtectedRoute from "./components/Navigation/ProtectedRoutes/PrivateProtectedRoute";
+import AdminProtectedRoute from "./components/Navigation/ProtectedRoutes/AdminProtectedRoute";
 function App() {
 	return (
 		<BrowserRouter>
 			<NavBar></NavBar>
 			<Switch>
-				<Route exact path="/update-category/:id" component={UpdateCategory} />
-				<Route exact path="/add-category" component={AddNewCategory} />
-				<Route exact path="/category-list" component={CategoryList} />
+				{/* Admin Only Access */}
+				<AdminProtectedRoute
+					exact
+					path="/update-category/:id"
+					component={UpdateCategory}
+				/>
+				<AdminProtectedRoute
+					exact
+					path="/add-category"
+					component={AddNewCategory}
+				/>
+				<AdminProtectedRoute
+					exact
+					path="/category-list"
+					component={CategoryList}
+				/>
+
+				{/* Logged in useers  */}
+
+				{/* for all users  */}
 				<Route exact path="/" component={HomePage} />
 				<Route exact path="/register" component={Register} />
 				<Route exact path="/login" component={Login} />
