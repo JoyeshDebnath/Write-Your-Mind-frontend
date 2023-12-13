@@ -5,6 +5,7 @@ import {
 	TrashIcon,
 } from "@heroicons/react/solid";
 import { useDispatch, useSelector } from "react-redux";
+import { Redirect } from "react-router-dom";
 import { useEffect } from "react";
 import {
 	updateCategoryAction,
@@ -27,8 +28,9 @@ const UpdateCategory = (props) => {
 	}, []);
 	//get category state data
 	const storeData = useSelector((state) => state);
-	const { loading, category, appErr, serverErr } = storeData?.category;
-	// console.log("CATEGOTY :", category);
+	const { loading, category, appErr, serverErr, isEdited, isDeleted } =
+		storeData?.category;
+	// console.log("CATEGOTY :", updatedCategory);
 
 	const formik = useFormik({
 		enableReinitialize: true,
@@ -42,6 +44,11 @@ const UpdateCategory = (props) => {
 		},
 		validationSchema: categoryFormSchema,
 	});
+
+	//redirect
+	if (isEdited || isDeleted) {
+		return <Redirect to="/category-list" />;
+	}
 
 	return (
 		<div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">

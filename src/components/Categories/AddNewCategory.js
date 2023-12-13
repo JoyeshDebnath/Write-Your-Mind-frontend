@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { createCategoryAction } from "./../../redux/slices/category/categorySlice";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-
+import { Redirect } from "react-router-dom";
 const categoryFormSchema = Yup.object({
 	title: Yup.string().required(
 		"Please enter the category title You want to Add ."
@@ -23,7 +23,12 @@ const AddNewCategory = () => {
 	});
 	//get category state data
 	const storeData = useSelector((state) => state);
-	const { loading, category, appErr, serverErr } = storeData?.category;
+	const { loading, category, appErr, serverErr, isCreated } =
+		storeData?.category;
+
+	if (isCreated) {
+		return <Redirect to="/category-list" />;
+	}
 	return (
 		<div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
 			<div className="max-w-md w-full space-y-8">
