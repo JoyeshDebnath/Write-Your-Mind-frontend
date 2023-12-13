@@ -8,6 +8,8 @@ import CategoryList from "./components/Categories/CategoryList";
 import UpdateCategory from "./components/Categories/UpdateCategory";
 import PrivateProtectedRoute from "./components/Navigation/ProtectedRoutes/PrivateProtectedRoute";
 import AdminProtectedRoute from "./components/Navigation/ProtectedRoutes/AdminProtectedRoute";
+import CreatePost from "./components/Posts/CreatePost";
+
 function App() {
 	return (
 		<BrowserRouter>
@@ -31,7 +33,11 @@ function App() {
 				/>
 
 				{/* Logged in useers  */}
-
+				<PrivateProtectedRoute
+					exact
+					path="/create-post"
+					component={CreatePost}
+				/>
 				{/* for all users  */}
 				<Route exact path="/" component={HomePage} />
 				<Route exact path="/register" component={Register} />
