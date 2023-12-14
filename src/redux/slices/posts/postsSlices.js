@@ -17,14 +17,7 @@ export const createPostAction = createAsyncThunk(
 		};
 
 		try {
-			const { data } = await axios.post(
-				`${baseUrl}/api/posts`,
-				{
-					title: post?.title,
-					description: post?.description,
-				},
-				config
-			);
+			const { data } = await axios.post(`${baseUrl}/api/posts`, post, config);
 
 			return data;
 		} catch (error) {

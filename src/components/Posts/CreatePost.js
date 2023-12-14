@@ -2,10 +2,13 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { createPostAction } from "../../redux/slices/posts/postsSlices";
+import CategoryDropdown from "../Categories/CategoryDropdown";
+
 //yup setup
 const formSchema = Yup.object({
 	title: Yup.string().required("Post Title is Required!"),
 	description: Yup.string().required("Post Description is Required!"),
+	category: Yup.object().required("Category Required !"),
 });
 export default function CreatePost() {
 	const dispatch = useDispatch();
@@ -14,9 +17,16 @@ export default function CreatePost() {
 		initialValues: {
 			title: "",
 			description: "",
+			category: "",
 		},
 		onSubmit: (values) => {
-			dispatch(createPostAction(values));
+			const data = {
+				category: values?.category?.label,
+				title: values?.title,
+				description: values?.description,
+			};
+			dispatch(createPostAction(data));
+			// console.log("Have access ???? ", values);
 		},
 		validationSchema: formSchema,
 	});
@@ -60,10 +70,16 @@ export default function CreatePost() {
 								</div>
 								{/* Err msg */}
 								<div className="text-red-500">
-									{formik.touched.title && formik.errors.title}
+									{formik?.touched?.title && formik?.errors?.title}
 								</div>
 							</div>
-							Category input goes here
+							<CategoryDropdown
+								value={formik.values.category?.label}
+								onChange={formik.setFieldValue}
+								onBlur={formik.setFieldTouched}
+								error={formik.errors.category}
+								touched={formik.touched.category}
+							/>
 							<div>
 								<label
 									htmlFor="password"
@@ -83,7 +99,7 @@ export default function CreatePost() {
 								></textarea>
 								{/* Err msg */}
 								<div className="text-red-500">
-									{formik.touched.description && formik.errors.description}
+									{formik?.touched?.description && formik?.errors?.description}
 								</div>
 							</div>
 							<div>
