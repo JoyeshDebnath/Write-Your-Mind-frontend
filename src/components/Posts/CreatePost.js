@@ -3,13 +3,43 @@ import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { createPostAction } from "../../redux/slices/posts/postsSlices";
 import CategoryDropdown from "../Categories/CategoryDropdown";
-
+import Dropzone from "react-dropzone";
+import styled from "styled-components";
 //yup setup
 const formSchema = Yup.object({
 	title: Yup.string().required("Post Title is Required!"),
 	description: Yup.string().required("Post Description is Required!"),
 	category: Yup.object().required("Category Required !"),
+	image: Yup.string().required("please provide an image !"),
 });
+
+// Dropozone css
+
+const Container = styled.div`
+flex: 1;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  padding: 20px;
+
+  border-width: 2px;
+
+  border-radius: 2px;
+
+  border-style: dashed;
+
+  background-color: #fafafa;
+
+  color: #bdbdbd;
+
+border-color:'red'
+
+  transition: border 0.24s ease-in-out;
+`;
 export default function CreatePost() {
 	const dispatch = useDispatch();
 	//formik setup
@@ -18,6 +48,7 @@ export default function CreatePost() {
 			title: "",
 			description: "",
 			category: "",
+			image: "",
 		},
 		onSubmit: (values) => {
 			const data = {
@@ -101,6 +132,35 @@ export default function CreatePost() {
 								<div className="text-red-500">
 									{formik?.touched?.description && formik?.errors?.description}
 								</div>
+								{/* image component  */}
+								<Container className="container bg-gray-800">
+									<Dropzone
+										onBlur={formik.handleBlur("image")}
+										accept="image/jpeg, image/png"
+										onDrop={(acceptedFiles) => {
+											formik.setFieldValue("image", acceptedFiles[0]);
+										}}
+									>
+										{({ getRootProps, getInputProps }) => {
+											return (
+												<div className="container">
+													<div
+														{...getRootProps({
+															className: "dropzone",
+															onDrop: (event) => event.stopPropagation(),
+														})}
+													>
+														<input {...getInputProps()} />
+
+														<p className="text-gray-300 text-lg cursor-pointer hover:text-gray-500">
+															Click here to select image
+														</p>
+													</div>
+												</div>
+											);
+										}}
+									</Dropzone>
+								</Container>
 							</div>
 							<div>
 								{/* Submit btn */}
