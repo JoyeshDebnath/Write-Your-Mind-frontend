@@ -17,7 +17,18 @@ export const createPostAction = createAsyncThunk(
 		};
 
 		try {
-			const { data } = await axios.post(`${baseUrl}/api/posts`, post, config);
+			const formData = new FormData();
+
+			formData.append("title", post?.title);
+			formData.append("description", post?.description);
+			formData.append("category", post?.category);
+			formData.append("image", post?.image);
+
+			const { data } = await axios.post(
+				`${baseUrl}/api/posts`,
+				formData,
+				config
+			);
 
 			return data;
 		} catch (error) {

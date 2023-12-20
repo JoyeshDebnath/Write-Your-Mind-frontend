@@ -55,6 +55,7 @@ export default function CreatePost() {
 				category: values?.category?.label,
 				title: values?.title,
 				description: values?.description,
+				image: values?.image,
 			};
 			dispatch(createPostAction(data));
 			// console.log("Have access ???? ", values);
