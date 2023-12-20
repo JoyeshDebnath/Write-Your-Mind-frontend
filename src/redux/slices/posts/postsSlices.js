@@ -54,7 +54,7 @@ const postSlices = createSlice({
 		});
 
 		builder.addCase(createPostAction.fulfilled, (state, action) => {
-			state.loading = true;
+			state.loading = false;
 			state.appErr = undefined;
 			state.serverErr = undefined;
 			state.postCreated = action?.payload;

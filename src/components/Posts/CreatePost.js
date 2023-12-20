@@ -5,6 +5,8 @@ import { createPostAction } from "../../redux/slices/posts/postsSlices";
 import CategoryDropdown from "../Categories/CategoryDropdown";
 import Dropzone from "react-dropzone";
 import styled from "styled-components";
+
+import { Redirect } from "react-router-dom";
 //yup setup
 const formSchema = Yup.object({
 	title: Yup.string().required("Post Title is Required!"),
@@ -62,9 +64,25 @@ export default function CreatePost() {
 		},
 		validationSchema: formSchema,
 	});
+
+	//state data from  store
+	const storeData = useSelector((state) => state);
+	const { loading, serverErr, appErr, postCreated } = storeData?.posts;
+	// console.log("Inside the create Post Component ...", storeData.posts);
+	//redirect if the post was created successfully..
+	if (postCreated) {
+		return <Redirect to="/posts" />;
+		//NOTE:  after redirect after post success empty the p[ostcreated state in redux else it will be redirceted ..
+	}
 	return (
 		<>
 			<div className="min-h-screen bg-gray-900 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+				{appErr || serverErr ? (
+					// <div className="sm:mx-auto sm:w-full sm:max-w-md">
+					<h2 className="mt-6 text-center text-3xl font-extrabold text-red-600">
+						{serverErr} - {appErr} !
+					</h2>
+				) : null}
 				<div className="sm:mx-auto sm:w-full sm:max-w-md">
 					<h2 className="mt-6 text-center text-3xl font-extrabold text-gray-300">
 						Create Post
@@ -85,7 +103,7 @@ export default function CreatePost() {
 									htmlFor="email"
 									className="block text-sm font-medium text-gray-700"
 								>
-									Title
+									Post Title 👦
 								</label>
 								<div className="mt-1">
 									{/* Title */}
@@ -105,6 +123,12 @@ export default function CreatePost() {
 									{formik?.touched?.title && formik?.errors?.title}
 								</div>
 							</div>
+							<label
+								htmlFor="password"
+								className="block text-sm font-medium text-gray-700 mt-3 "
+							>
+								Select Post Category 👇
+							</label>
 							<CategoryDropdown
 								value={formik.values.category?.label}
 								onChange={formik.setFieldValue}
@@ -115,9 +139,9 @@ export default function CreatePost() {
 							<div>
 								<label
 									htmlFor="password"
-									className="block text-sm font-medium text-gray-700"
+									className="block text-sm font-medium text-gray-700 mb-3"
 								>
-									Description
+									Post Description 🎅
 								</label>
 								{/* Description */}
 								<textarea
@@ -134,6 +158,12 @@ export default function CreatePost() {
 									{formik?.touched?.description && formik?.errors?.description}
 								</div>
 								{/* image component  */}
+								<label
+									htmlFor="password"
+									className="block text-sm font-medium text-gray-700 mt-3 mb-3"
+								>
+									Select Image to Upload 🙇‍♂️
+								</label>
 								<Container className="container bg-gray-800">
 									<Dropzone
 										onBlur={formik.handleBlur("image")}
@@ -165,12 +195,21 @@ export default function CreatePost() {
 							</div>
 							<div>
 								{/* Submit btn */}
-								<button
-									type="submit"
-									className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-								>
-									Create
-								</button>
+								{loading ? (
+									<button
+										disabled
+										className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+									>
+										Please Wait !
+									</button>
+								) : (
+									<button
+										type="submit"
+										className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+									>
+										Create
+									</button>
+								)}
 							</div>
 						</form>
 					</div>
