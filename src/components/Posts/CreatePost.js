@@ -67,10 +67,11 @@ export default function CreatePost() {
 
 	//state data from  store
 	const storeData = useSelector((state) => state);
-	const { loading, serverErr, appErr, postCreated } = storeData?.posts;
+	const { loading, serverErr, appErr, postCreated, isPostCreated } =
+		storeData?.posts;
 	// console.log("Inside the create Post Component ...", storeData.posts);
 	//redirect if the post was created successfully..
-	if (postCreated) {
+	if (isPostCreated) {
 		return <Redirect to="/posts" />;
 		//NOTE:  after redirect after post success empty the p[ostcreated state in redux else it will be redirceted ..
 	}

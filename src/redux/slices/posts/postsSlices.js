@@ -2,6 +2,9 @@ import { createAsyncThunk, createSlice, createAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import baseUrl from "../../../utils/baseURL";
 
+//Reset Post action -- custom
+const resetPostAction = createAction("post/post-created-reset");
+
 //-------------------------------------------------------------------
 //create Post Action
 //------------------------------------------------------------------
@@ -29,7 +32,7 @@ export const createPostAction = createAsyncThunk(
 				formData,
 				config
 			);
-
+			dispatch(resetPostAction()); //custom reset action
 			return data;
 		} catch (error) {
 			if (!error?.response) {
@@ -53,11 +56,17 @@ const postSlices = createSlice({
 			state.serverErr = undefined;
 		});
 
+		//custom post reset
+		builder.addCase(resetPostAction, (state, action) => {
+			state.isPostCreated = true;
+		});
+
 		builder.addCase(createPostAction.fulfilled, (state, action) => {
 			state.loading = false;
 			state.appErr = undefined;
 			state.serverErr = undefined;
 			state.postCreated = action?.payload;
+			state.isPostCreated = false;
 		});
 
 		builder.addCase(createPostAction.rejected, (state, action) => {
