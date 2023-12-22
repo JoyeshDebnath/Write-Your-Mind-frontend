@@ -42,9 +42,9 @@ function App() {
 				{/* for all users  */}
 
 				<Route exact path="/" component={HomePage} />
+				<Route eaxct path="/posts" component={PostsList} />
 				<Route exact path="/register" component={Register} />
 				<Route exact path="/login" component={Login} />
-				<Route eaxct path="/posts" component={PostsList} />
 			</Switch>
 		</BrowserRouter>
 	);

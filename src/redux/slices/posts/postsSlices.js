@@ -51,7 +51,7 @@ export const fetchAllPostAction = createAsyncThunk(
 	async (post, { rejectWithValue, getState, dispatch }) => {
 		try {
 			const { data } = await axios.get(`${baseUrl}/api/posts`);
-
+			// console.log("Data", data);
 			return data;
 		} catch (error) {
 			if (!error?.response) {

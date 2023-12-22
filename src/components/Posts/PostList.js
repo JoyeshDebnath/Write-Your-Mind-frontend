@@ -13,32 +13,32 @@ export default function PostsList() {
 
 	const storeData = useSelector((state) => state);
 	const { loading, appErr, serverErr, postsList } = storeData?.posts;
-	console.log(storeData.posts);
+	// console.log(storeData.posts);
 	return (
 		<>
 			<section>
-				<div class="py-20 bg-gray-900 min-h-screen radius-for-skewed">
-					<div class="container mx-auto px-4">
-						<div class="mb-16 flex flex-wrap items-center">
-							<div class="w-full lg:w-1/2">
-								<span class="text-green-600 font-bold">
+				<div className="py-20 bg-gray-900 min-h-screen radius-for-skewed">
+					<div className="container mx-auto px-4">
+						<div className="mb-16 flex flex-wrap items-center">
+							<div className="w-full lg:w-1/2">
+								<span className="text-green-600 font-bold">
 									Latest Posts from our awesome authors
 								</span>
-								<h2 class="text-4xl text-gray-300 lg:text-5xl font-bold font-heading">
+								<h2 className="text-4xl text-gray-300 lg:text-5xl font-bold font-heading">
 									Latest Post
 								</h2>
 							</div>
-							<div class=" block text-right w-1/2">
+							<div className=" block text-right w-1/2">
 								{/* View All */}
-								<button class="inline-block py-2 px-6 rounded-l-xl rounded-t-xl bg-green-600 hover:bg-green-700 text-gray-50 font-bold leading-loose transition duration-200">
+								<button className="inline-block py-2 px-6 rounded-l-xl rounded-t-xl bg-green-600 hover:bg-green-700 text-gray-50 font-bold leading-loose transition duration-200">
 									View All Posts
 								</button>
 							</div>
 						</div>
-						<div class="flex flex-wrap -mx-3">
-							<div class="mb-8 lg:mb-0 w-full lg:w-1/4 px-3">
-								<div class="py-4 px-6 bg-gray-600 shadow rounded">
-									<h4 class="mb-4 text-gray-500 font-bold uppercase">
+						<div className="flex flex-wrap -mx-3">
+							<div className="mb-8 lg:mb-0 w-full lg:w-1/4 px-3">
+								<div className="py-4 px-6 bg-gray-600 shadow rounded">
+									<h4 className="mb-4 text-gray-500 font-bold uppercase">
 										Categories
 									</h4>
 									<ul>
@@ -60,7 +60,7 @@ export default function PostsList() {
 									</ul>
 								</div>
 							</div>
-							<div class="w-full lg:w-3/4 px-3">
+							<div className="w-full lg:w-3/4 px-3">
 								{/* posts here  */}
 								{loading ? (
 									<Loading />
@@ -69,14 +69,17 @@ export default function PostsList() {
 								) : postsList?.length === 0 ? (
 									<h1>No Post Found </h1>
 								) : (
-									postsList.map((post) => {
+									postsList?.map((post) => {
 										return (
-											<div class="flex flex-wrap bg-gray-900 -mx-3  lg:mb-6">
-												<div class="mb-10  w-full lg:w-1/4 px-3">
+											<div
+												key={post.id}
+												className="flex flex-wrap bg-gray-900 -mx-3  lg:mb-6"
+											>
+												<div className="mb-10  w-full lg:w-1/4 px-3">
 													<Link>
 														{/* Post image */}
 														<img
-															class="w-full h-full object-cover rounded"
+															className="w-full h-full object-cover rounded"
 															src={post.image}
 															alt=""
 														/>
@@ -114,13 +117,13 @@ export default function PostsList() {
 														</div>
 													</div>
 												</div>
-												<div class="w-full lg:w-3/4 px-3">
-													<Link class="hover:underline">
-														<h3 class="mb-1 text-2xl text-green-400 font-bold font-heading">
+												<div className="w-full lg:w-3/4 px-3">
+													<Link className="hover:underline">
+														<h3 className="mb-1 text-2xl text-green-400 font-bold font-heading">
 															{post?.title}
 														</h3>
 													</Link>
-													<p class="text-gray-300">{post.description}</p>
+													<p className="text-gray-300">{post.description}</p>
 													{/* Read more */}
 													<Link className="text-indigo-500 hover:underline">
 														Read More..
@@ -165,18 +168,18 @@ export default function PostsList() {
 					</div>
 				</div>
 				<div className="bg-gray-900">
-					<div class="skew bg-green-500 skew-bottom mr-for-radius">
+					<div className="skew bg-green-500 skew-bottom mr-for-radius">
 						<svg
-							class="h-8 md:h-12 lg:h-10 w-full text-gray-900"
+							className="h-8 md:h-12 lg:h-10 w-full text-gray-900"
 							viewBox="0 0 10 10"
 							preserveAspectRatio="none"
 						>
 							<polygon fill="currentColor" points="0 0 10 0 0 10"></polygon>
 						</svg>
 					</div>
-					<div class="skew bg-gray-500  skew-bottom ml-for-radius">
+					<div className="skew bg-gray-500  skew-bottom ml-for-radius">
 						<svg
-							class="h-8 bg-gray-500 md:h-12 lg:h-20 w-full text-gray-900"
+							className="h-8 bg-gray-500 md:h-12 lg:h-20 w-full text-gray-900"
 							viewBox="0 0 10 10"
 							preserveAspectRatio="none"
 						>
