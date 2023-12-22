@@ -1,23 +1,40 @@
 import { ThumbUpIcon, ThumbDownIcon, EyeIcon } from "@heroicons/react/solid";
 import { Link } from "react-router-dom";
 import { fetchAllPostAction } from "../../redux/slices/posts/postsSlices";
+import { fetchAllCategoriesAction } from "../../redux/slices/category/categorySlice";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import Loading from "../../utils/Loading";
 import DateFormatter from "../../utils/DateFormatter";
+
 export default function PostsList() {
 	const dispatch = useDispatch();
+	//fetch all posts dispatch
 	useEffect(() => {
 		dispatch(fetchAllPostAction());
 	}, [dispatch]);
 
+	//fetch all categories dispatch
+	useEffect(() => {
+		dispatch(fetchAllCategoriesAction());
+	}, [dispatch]);
+
 	const storeData = useSelector((state) => state);
+	//posts
 	const { loading, appErr, serverErr, postsList } = storeData?.posts;
+	//categroies
+	const {
+		categoryList,
+		loading: categoryLoading,
+		appErr: categoryAppErr,
+		serverErr: categoryServerErr,
+	} = storeData?.category;
+	console.log(categoryList);
 	// console.log(storeData.posts);
 	return (
 		<>
 			<section>
-				<div className="py-20 bg-gray-900 min-h-screen radius-for-skewed">
+				<div className="py-20 bg-neutral-900 min-h-screen radius-for-skewed">
 					<div className="container mx-auto px-4">
 						<div className="mb-16 flex flex-wrap items-center">
 							<div className="w-full lg:w-1/2">
@@ -37,26 +54,37 @@ export default function PostsList() {
 						</div>
 						<div className="flex flex-wrap -mx-3">
 							<div className="mb-8 lg:mb-0 w-full lg:w-1/4 px-3">
-								<div className="py-4 px-6 bg-gray-600 shadow rounded">
-									<h4 className="mb-4 text-gray-500 font-bold uppercase">
+								<div className="py-4 px-6 bg-gray-700 shadow rounded">
+									<h4 className="mb-4 text-emerald-50 font-bold uppercase">
 										Categories
 									</h4>
 									<ul>
-										<div>Loading</div>
+										{categoryLoading ? (
+											<div className="mb-2">
+												<Loading />
+											</div>
+										) : null}
 
-										<div className="text-red-400 text-base">
-											Categories Error goes here
-										</div>
-
-										<div className="text-xl text-gray-100 text-center">
-											No category
-										</div>
-
-										<li>
-											<p className="block cursor-pointer py-2 px-3 mb-4 rounded text-yellow-500 font-bold bg-gray-500">
-												{/* {category?.title} */} category List
-											</p>
-										</li>
+										{categoryAppErr || categoryServerErr ? (
+											<div className="text-red-500 text-base">
+												{categoryServerErr} - {categoryAppErr}
+											</div>
+										) : categoryList?.length === 0 ? (
+											<div className="text-xl text-gray-100 text-center">
+												No category
+											</div>
+										) : (
+											categoryList?.map((category) => {
+												return (
+													<li>
+														<p className="block cursor-pointer py-2 px-3 mb-4 rounded text-yellow-300 font-bold bg-gray-500">
+															{/* {category?.title} */} {category?.title}
+														</p>
+													</li>
+												);
+											})
+										)}
+										{/* {} */}
 									</ul>
 								</div>
 							</div>
