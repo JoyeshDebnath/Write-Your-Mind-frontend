@@ -11,7 +11,7 @@ export default function PostsList() {
 	const dispatch = useDispatch();
 	//fetch all posts dispatch
 	useEffect(() => {
-		dispatch(fetchAllPostAction());
+		dispatch(fetchAllPostAction(""));
 	}, [dispatch]);
 
 	//fetch all categories dispatch
@@ -47,7 +47,10 @@ export default function PostsList() {
 							</div>
 							<div className=" block text-right w-1/2">
 								{/* View All */}
-								<button className="inline-block py-2 px-6 rounded-l-xl rounded-t-xl bg-green-600 hover:bg-green-700 text-gray-50 font-bold leading-loose transition duration-200">
+								<button
+									onClick={() => dispatch(fetchAllPostAction(""))}
+									className="inline-block py-2 px-6 rounded-l-xl rounded-t-xl bg-green-600 hover:bg-green-700 text-gray-50 font-bold leading-loose transition duration-200"
+								>
 									View All Posts
 								</button>
 							</div>
@@ -76,7 +79,11 @@ export default function PostsList() {
 										) : (
 											categoryList?.map((category) => {
 												return (
-													<li>
+													<li
+														onClick={() =>
+															dispatch(fetchAllPostAction(category?.title))
+														}
+													>
 														<p className="block cursor-pointer py-2 px-3 mb-4 rounded text-yellow-300 font-bold bg-gray-500">
 															{/* {category?.title} */} {category?.title}
 														</p>

@@ -48,9 +48,11 @@ export const createPostAction = createAsyncThunk(
 //------------------------------------------------------------------
 export const fetchAllPostAction = createAsyncThunk(
 	"post/fetch-posts",
-	async (post, { rejectWithValue, getState, dispatch }) => {
+	async (category, { rejectWithValue, getState, dispatch }) => {
 		try {
-			const { data } = await axios.get(`${baseUrl}/api/posts`);
+			const { data } = await axios.get(
+				`${baseUrl}/api/posts?category=${category}`
+			);
 			// console.log("Data", data);
 			return data;
 		} catch (error) {
