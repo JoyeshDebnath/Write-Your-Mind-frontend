@@ -3,11 +3,12 @@ import { Link } from "react-router-dom";
 import { fetchAllPostAction } from "../../redux/slices/posts/postsSlices";
 import { fetchAllCategoriesAction } from "../../redux/slices/category/categorySlice";
 import { useSelector, useDispatch } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Loading from "../../utils/Loading";
 import DateFormatter from "../../utils/DateFormatter";
 
 export default function PostsList() {
+	const [selectedCategory, setSelectedCategory] = useState("All");
 	const dispatch = useDispatch();
 	//fetch all posts dispatch
 	useEffect(() => {
@@ -41,14 +42,22 @@ export default function PostsList() {
 								<span className="text-green-600 font-bold">
 									Latest Posts from our awesome authors
 								</span>
-								<h2 className="text-4xl text-gray-300 lg:text-5xl font-bold font-heading">
+								<h2 className="text-4xl text-gray-300 mb-3 lg:text-5xl font-bold font-heading">
 									Latest Post
 								</h2>
+
+								<h3 className="text-2xl text-fuchsia-500 mt-2 font-bold">
+									Category Selected ✏:{"    "}
+									<span className="text-purple-200">{selectedCategory}</span>
+								</h3>
 							</div>
 							<div className=" block text-right w-1/2">
 								{/* View All */}
 								<button
-									onClick={() => dispatch(fetchAllPostAction(""))}
+									onClick={() => {
+										dispatch(fetchAllPostAction(""));
+										setSelectedCategory("All");
+									}}
 									className="inline-block py-2 px-6 rounded-l-xl rounded-t-xl bg-green-600 hover:bg-green-700 text-gray-50 font-bold leading-loose transition duration-200"
 								>
 									View All Posts
@@ -80,9 +89,10 @@ export default function PostsList() {
 											categoryList?.map((category) => {
 												return (
 													<li
-														onClick={() =>
-															dispatch(fetchAllPostAction(category?.title))
-														}
+														onClick={() => {
+															dispatch(fetchAllPostAction(category?.title));
+															setSelectedCategory(category?.title);
+														}}
 													>
 														<p className="block cursor-pointer py-2 px-3 mb-4 rounded text-yellow-300 font-bold bg-gray-500">
 															{/* {category?.title} */} {category?.title}
