@@ -160,7 +160,7 @@ export default function PostsList() {
 																	onClick={() =>
 																		dispatch(togglePostDislikeAction(post?._id))
 																	}
-																	className="h-7 w-7 cursor-pointer text-gray-600"
+																	className="h-7 w-7 cursor-pointer text-red-500"
 																/>
 															</div>
 															<div className="pl-2 text-gray-600">
