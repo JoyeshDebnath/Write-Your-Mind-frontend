@@ -80,7 +80,7 @@ export const togglePostLikeAction = createAsyncThunk(
 		try {
 			const { data } = await axios.put(
 				`${baseUrl}/api/posts/likes`,
-				postId,
+				{ postId },
 				config
 			);
 
@@ -110,7 +110,7 @@ export const togglePostDislikeAction = createAsyncThunk(
 		try {
 			const { data } = await axios.put(
 				`${baseUrl}/api/posts/dislikes`,
-				postId,
+				{ postId },
 				config
 			);
 
@@ -197,7 +197,7 @@ const postSlices = createSlice({
 		builder.addCase(togglePostLikeAction.rejected, (state, action) => {
 			state.loading = false;
 			state.appErr = action?.payload?.message;
-			state.serverErr = action?.err?.message;
+			state.serverErr = action?.error?.message;
 		});
 
 		//--------------------------------------------------
@@ -219,7 +219,7 @@ const postSlices = createSlice({
 		builder.addCase(togglePostDislikeAction.rejected, (state, action) => {
 			state.loading = false;
 			state.appErr = action?.payload?.message;
-			state.serverErr = action?.err?.message;
+			state.serverErr = action?.error?.message;
 		});
 	},
 });

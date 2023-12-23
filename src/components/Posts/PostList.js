@@ -1,6 +1,10 @@
 import { ThumbUpIcon, ThumbDownIcon, EyeIcon } from "@heroicons/react/solid";
 import { Link } from "react-router-dom";
-import { fetchAllPostAction } from "../../redux/slices/posts/postsSlices";
+import {
+	fetchAllPostAction,
+	togglePostLikeAction,
+	togglePostDislikeAction,
+} from "../../redux/slices/posts/postsSlices";
 import { fetchAllCategoriesAction } from "../../redux/slices/category/categorySlice";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
@@ -9,20 +13,8 @@ import DateFormatter from "../../utils/DateFormatter";
 
 export default function PostsList() {
 	const [selectedCategory, setSelectedCategory] = useState("All");
-	const dispatch = useDispatch();
-	//fetch all posts dispatch
-	useEffect(() => {
-		dispatch(fetchAllPostAction(""));
-	}, [dispatch]);
-
-	//fetch all categories dispatch
-	useEffect(() => {
-		dispatch(fetchAllCategoriesAction());
-	}, [dispatch]);
-
 	const storeData = useSelector((state) => state);
-	//posts
-	const { loading, appErr, serverErr, postsList } = storeData?.posts;
+
 	//categroies
 	const {
 		categoryList,
@@ -32,6 +24,21 @@ export default function PostsList() {
 	} = storeData?.category;
 	console.log(categoryList);
 	// console.log(storeData.posts);
+	//posts
+	const { loading, appErr, serverErr, postsList, likes, dislikes } =
+		storeData?.posts;
+	const dispatch = useDispatch();
+	//fetch all posts dispatch
+	useEffect(() => {
+		dispatch(fetchAllPostAction(""));
+	}, [dispatch, likes, dislikes]);
+	//any time the likes and dislikes states changes the component should rerender .... thats why the dependency array of UseEffect contains likes and dislikes as a dependency ....
+
+	//fetch all categories dispatch
+	useEffect(() => {
+		dispatch(fetchAllCategoriesAction());
+	}, [dispatch]);
+
 	return (
 		<>
 			<section>
@@ -135,7 +142,12 @@ export default function PostsList() {
 														<div className="flex flex-row justify-center items-center ml-4 mr-4 pb-2 pt-1">
 															{/* Togle like  */}
 															<div className="">
-																<ThumbUpIcon className="h-7 w-7 text-indigo-600 cursor-pointer" />
+																<ThumbUpIcon
+																	onClick={() =>
+																		dispatch(togglePostLikeAction(post?._id))
+																	}
+																	className="h-7 w-7 text-indigo-600 cursor-pointer"
+																/>
 															</div>
 															<div className="pl-2 text-gray-600">
 																({post?.likes?.length})
@@ -144,7 +156,12 @@ export default function PostsList() {
 														{/* Dislike */}
 														<div className="flex flex-row  justify-center items-center ml-4 mr-4 pb-2 pt-1">
 															<div>
-																<ThumbDownIcon className="h-7 w-7 cursor-pointer text-gray-600" />
+																<ThumbDownIcon
+																	onClick={() =>
+																		dispatch(togglePostDislikeAction(post?._id))
+																	}
+																	className="h-7 w-7 cursor-pointer text-gray-600"
+																/>
 															</div>
 															<div className="pl-2 text-gray-600">
 																{post?.dislikes?.length}
